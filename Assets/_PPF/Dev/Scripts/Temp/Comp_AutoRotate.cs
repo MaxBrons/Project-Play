@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AutoRotateObject : MonoBehaviour
+public class Comp_AutoRotate : MonoBehaviour
 {
     [SerializeField] private float _rotationSpeed = 5f;
     private void Update() {

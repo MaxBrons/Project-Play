@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ResetLevelOnButtonPress : MonoBehaviour
+public class Comp_ResetLevelButton : MonoBehaviour
 {
-    private Button _resetButton;
-
+    private Button m_Button;
     private void Start() {
-        _resetButton = GetComponent<Button>();
-        if (_resetButton) {
-            _resetButton.onClick.AddListener(() => StartCoroutine(nameof(ResetLevel)));
-        }
-    }
+        m_Button = GetComponent<Button>();
 
+        if (m_Button)
+            m_Button.onClick.AddListener(() => StartCoroutine(ResetLevel()));
+    }
     private IEnumerator ResetLevel() {
         SceneManager.LoadSceneAsync(0);
         yield return null;

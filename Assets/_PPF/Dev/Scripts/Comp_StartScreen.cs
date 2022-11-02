@@ -6,12 +6,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartScreen : MonoBehaviour
+public class Comp_StartScreen : MonoBehaviour
 {
-    [SerializeField] private Button _button;
+    private Button m_Button;
 
     private void Start() {
-        _button.onClick.AddListener(() => StartCoroutine(nameof(OnButtonClicked)));
+        m_Button = GetComponent<Button>();
+
+        if (m_Button)
+            m_Button.onClick.AddListener(() => StartCoroutine(OnButtonClicked()));
     }
 
     public IEnumerator OnButtonClicked() {

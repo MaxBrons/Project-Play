@@ -1677,7 +1677,7 @@ GameObject:
   - component: {fileID: 3773314627594584702}
   - component: {fileID: 7879753853587246145}
   - component: {fileID: 1991381483894361463}
-  - component: {fileID: 7810690408921744533}
+  - component: {fileID: 4988200649272653354}
   m_Layer: 0
   m_Name: Rubik's Cube- New
   m_TagString: Untagged
@@ -1780,18 +1780,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PhysicsOnStart: 1
---- !u!114 &7810690408921744533
+  m_ShouldFragment: 1
+--- !u!114 &4988200649272653354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4571870958591061504}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d6545d729c2bd94f8b512b4e8f74b0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 68805c8efa2538447acad8d3d07bf268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 30
 --- !u!1 &5511973392370364240
 GameObject:
   m_ObjectHideFlags: 0
@@ -2295,6 +2297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de84bace97fd6a49a656ca75dc67d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TeleportLocation: {fileID: 0}
 --- !u!1 &7067478467588212708
 GameObject:
   m_ObjectHideFlags: 0

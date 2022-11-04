@@ -22,10 +22,11 @@ public class Comp_CubePiece : MonoBehaviour
 {
     [SerializeField] private CubePieceTypes m_CubePiece;
     [SerializeField] private List<CubePieceColors> m_CubePieceColors = new List<CubePieceColors>() { CubePieceColors.White, CubePieceColors.White };
-    [SerializeField] private float m_SearchRadius = 2f;
+    [SerializeField] private float m_SearchRadius = 5f;
 
     private Comp_Drag m_DragComp;
     private Comp_CubeSlot m_CurrentSlot;
+    private Comp_CubeSlot m_CorrespondingSlot;
     private bool m_ShouldSearch = false;
     private int m_UpdateFrequency = 20;
 
@@ -35,6 +36,17 @@ public class Comp_CubePiece : MonoBehaviour
             m_DragComp.OnDrag += OnDrag;
             m_DragComp.OnRelease += OnRelease;
         }
+
+        m_CorrespondingSlot = FindCorrespondingCubeSlot();
+    }
+
+    private Comp_CubeSlot FindCorrespondingCubeSlot() {
+        var slots = FindObjectsOfType<Comp_CubeSlot>();
+        foreach (Comp_CubeSlot slot in slots)
+            if (slot.Compare(m_CubePiece, m_CubePieceColors)) {
+                return slot;
+            }
+        return null;
     }
 
     private void OnDrag(GameObject obj) {
@@ -77,23 +89,33 @@ public class Comp_CubePiece : MonoBehaviour
     }
 
     private void TryOccupy() {
-        if (m_CurrentSlot) { 
+        if (m_CurrentSlot) {
             m_CurrentSlot.Occupy(this);
+            m_DragComp.Lock();
+            m_CurrentSlot.OnUnoccypy += OnCurrentSlotUnoccupy;
             return;
         }
         m_CurrentSlot = null;
     }
 
+    private void OnCurrentSlotUnoccupy() {
+        m_CurrentSlot.OnUnoccypy -= OnCurrentSlotUnoccupy;
+        m_DragComp.UnLock();
+    }
     private Comp_CubeSlot FindSlot() {
-        RaycastHit[] results = Physics.SphereCastAll(transform.position, m_SearchRadius, Vector3.up);
-        foreach (RaycastHit hit in results) {
-            Comp_CubeSlot slot = hit.transform.GetComponent<Comp_CubeSlot>();
-            if (slot != null) {
-                if (slot.Compare(m_CubePiece, m_CubePieceColors)) {
-                    return slot;
-                }
-            }
-        }
+        if (Vector3.Distance(transform.position, m_CorrespondingSlot.transform.position) <= m_SearchRadius)
+            return m_CorrespondingSlot;
         return null;
+
+        //RaycastHit[] results = Physics.SphereCastAll(transform.position, m_SearchRadius, Vector3.up);
+        //foreach (RaycastHit hit in results) {
+        //    Comp_CubeSlot slot = hit.transform.GetComponent<Comp_CubeSlot>();
+        //    if (slot != null) {
+        //        if (slot.Compare(m_CubePiece, m_CubePieceColors)) {
+        //            return slot;
+        //        }
+        //    }
+        //}
+        //return null;
     }
 }

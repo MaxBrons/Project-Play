@@ -9,19 +9,29 @@ public class Comp_Drag : MonoBehaviour
     [SerializeField] private float _speed = 5f;
 
     private Rigidbody m_Rb;
+    private bool m_Locked = false;
 
     private void Start() {
         m_Rb = GetComponent<Rigidbody>();
     }
 
-    void OnMouseDown() {
+    public void Lock() => m_Locked = true;
+    public void UnLock() => m_Locked = false;
+
+    public void Drag() {
+        if (m_Locked)
+            return;
+
         if (m_Rb)
             m_Rb.isKinematic = true;
 
         OnDrag?.Invoke(gameObject);
     }
 
-    private void OnMouseUp() {
+    public void Release() {
+        if (m_Locked)
+            return;
+
         if (m_Rb)
             m_Rb.isKinematic = false;
 

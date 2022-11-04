@@ -38,6 +38,17 @@ public class Comp_Interaction : MonoBehaviour
     }
 
     private void Update() {
+        if (Input.GetMouseButtonDown(0)) {
+            if (m_CurrentObject) {
+                m_CurrentObject.GetComponent<Comp_Drag>().Drag();
+            }
+        }
+        if (Input.GetMouseButtonUp(0)) {
+            if (m_CurrentObject) {
+                m_CurrentObject.GetComponent<Comp_Drag>().Release();
+            }
+        }
+
         if (m_IsDragging) {
             m_ObjectOffset += m_Camera.transform.forward * Input.GetAxis(MOUSESCROLLAXIS) * m_DragScrollSpeed;
             Vector3 cursorPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, m_ScreenPoint.z);
@@ -45,14 +56,17 @@ public class Comp_Interaction : MonoBehaviour
             Vector3 newPosition = new Vector3(cursorWP.x, cursorWP.y >= 0f ? cursorWP.y : 0f, cursorWP.z) + m_ObjectOffset;
             m_DragHandle.transform.position = Vector3.Slerp(m_DragHandle.transform.position, newPosition, 10f * Time.deltaTime);
         }
-
     }
 
     private IEnumerator Interval_Update_Drag() {
         while (m_ShouldUpdate) {
             if (!m_IsDragging) {
 
+                Debug.DrawRay(m_Camera.ScreenToWorldPoint(Input.mousePosition), m_Camera.transform.forward, Color.red, 1f);
+
+
                 Ray ray = m_Camera.ScreenPointToRay(Input.mousePosition);
+                //Debug.DrawRay(ray.origin,ray.direction,Color.red,5f);
                 if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity)) {
                     if (m_CurrentObject != raycastHit.transform.gameObject) {
 
@@ -96,6 +110,7 @@ public class Comp_Interaction : MonoBehaviour
         m_IsDragging = false;
         if (obj != null && obj.transform.parent == m_DragHandle.transform) {
             obj.transform.parent = null;
+            m_CurrentObject = null;
         }
     }
 }

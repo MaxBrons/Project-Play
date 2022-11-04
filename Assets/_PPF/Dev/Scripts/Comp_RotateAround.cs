@@ -16,6 +16,9 @@ public class Comp_RotateAround : MonoBehaviour
 
     private void Start() {
         m_Camera = GetComponent<Camera>();
+
+        if (m_Camera)
+            m_Camera.transform.LookAt(m_ObjectToRotateAround.transform);
     }
 
     // Update is called once per frame
@@ -25,11 +28,11 @@ public class Comp_RotateAround : MonoBehaviour
         if (m_Camera && m_ObjectToRotateAround) {
             if (horInput != 0) {
                 float dir = horInput > 0 ? 1 : -1;
-                m_Camera.transform.RotateAround(m_ObjectToRotateAround.transform.localPosition, Vector3.up, m_RotationSpeed * -dir * Time.deltaTime);
+                m_Camera.transform.RotateAround(m_ObjectToRotateAround.transform.position, Vector3.up, m_RotationSpeed * -dir * Time.deltaTime);
+                //m_Camera.transform.LookAt(m_ObjectToRotateAround.transform);
             }
             if (verInput != 0) {
                 float distance = (m_Camera.transform.position - m_ObjectToRotateAround.transform.position).magnitude;
-                print(distance);
                 float dir = verInput > 0 ? 1 : -1;
                 if (distance > m_MinZoomDistance && verInput > 0) {
                     m_Camera.transform.Translate(new Vector3(0, 0, dir * Time.deltaTime), Space.Self);
